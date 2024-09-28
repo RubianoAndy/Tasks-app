@@ -1,0 +1,39 @@
+<div *ngIf="showAlert" aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-2 py-2 sm:items-start sm:p-6 z-50">
+    <div class="flex w-full flex-col items-center space-y-2 sm:items-end">
+        <div class="pointer-events-auto w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-lg">
+            <div class="p-2">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div *ngIf="type == 'okay'">
+                            <i class="fa-solid fa-check text-green-500"></i>
+                        </div>
+
+                        <div *ngIf="type == 'warning'">
+                            <i class="fa-solid fa-triangle-exclamation text-yellow-500"></i>
+                        </div>
+
+                        <div *ngIf="type == 'error'">
+                            <i class="fa-solid fa-x text-red-500"></i>
+                        </div>
+                    </div>
+
+                    <div class="ml-3 flex-1">
+                        <p class="text-sm font-bold text-black">
+                            title
+                        </p>
+
+                        <p class="mt-1 text-sm text-black">
+                            message
+                        </p>
+                    </div>
+
+                    <div class="ml-4 flex flex-shrink-0">
+                        <button (click)="closeAlert()" type="button" class="text-black bg-transparent hover:bg-red-500 hover:text-white rounded-lg text-sm w-6 h-6 ms-auto inline-flex justify-center items-center">
+                            <i class="fa-solid fa-x"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

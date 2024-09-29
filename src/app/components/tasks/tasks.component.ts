@@ -2,14 +2,11 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AlertService } from '../../global/services/alert/alert.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
     RouterLink,
     NgClass,
     NgFor,
@@ -19,7 +16,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
   styleUrl: './tasks.component.scss'
 })
 export default class TasksComponent implements OnInit {
-  form!: FormGroup;
   totalTasks: any[] = [];
   selectedStatus: any;
 
@@ -29,7 +25,6 @@ export default class TasksComponent implements OnInit {
   ]
 
   constructor(
-    private formBuilder: FormBuilder,
     private alertService: AlertService,
   ) { }
 

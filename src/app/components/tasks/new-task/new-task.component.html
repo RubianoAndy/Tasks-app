@@ -1,0 +1,27 @@
+<form class="space-y-2 p-10" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="text-center">
+        <h2 class="mb-1 text-5xl font-semibold text-foreground">Tarea nueva</h2>
+        <p class="text-sm text-muted-foreground">Bienvenido a este módulo, acá puedes crear tu nueva tarea y asignarla a cada persona</p>
+    </div>
+
+    <div class="flex gap-2">
+        <div class="w-1/2">
+            <label for="task" class="text-sm text-start text-black">Tarea <span class="text-red-500">*</span><span *ngIf="!form.controls['task'].valid && form.controls['task'].value" class="msg-error">(Este campo es obligatorio)</span></label>
+            <input [ngClass]="{'bg-red-300': !form.controls['task'].valid && form.controls['task'].touched}" id="task" formControlName="task" type="text" placeholder="Tarea" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200"/>
+        </div>
+    
+        <div class="w-1/2">
+            <label for="status" class="text-sm text-start text-black">Estado <span class="text-red-500">*</span><span *ngIf="!form.controls['status'].valid && form.controls['status'].value" class="msg-error">(Este campo es obligatorio)</span></label>
+            <select id="status" class="block w-full text-black text-sm rounded-lg px-5 py-2 placeholder:text-gray-500 border border-gray-200">
+                <!-- <option selected>Seleccione</option> -->
+                <option [value]="statusOption.value" *ngFor="let statusOption of statusOptions">{{ statusOption.label }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="flex items-center">
+        <div class="w-full">
+            <button type="submit" [disabled]="form.invalid" class="flex flex-1 w-1/12 justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 disabled:bg-green-400 disabled:opacity-50">Crear tarea</button>
+        </div>
+    </div>
+</form>

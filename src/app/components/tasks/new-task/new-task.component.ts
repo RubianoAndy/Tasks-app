@@ -50,8 +50,8 @@ export default class NewTaskComponent implements OnInit {
     }
 
     this.form = this.formBuilder.group({
-      task: [data.task, [ Validators.required, Validators.minLength(2), Validators.maxLength(150) ]],
-      status: [data.status, [ Validators.required, Validators.minLength(2) ]],
+      task: [data.task, [ Validators.required, Validators.minLength(5), Validators.maxLength(150) ]],
+      status: [data.status, [ Validators.required, Validators.minLength(1) ]],
       responsibles: this.formBuilder.array([]),
     });
   }
@@ -61,16 +61,37 @@ export default class NewTaskComponent implements OnInit {
   }
 
   addResponsible() {
-    const responsibleGroup = this.formBuilder.group({
-      name: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(1)]]
+    const responsiblesGroup = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      age: ['', [Validators.required, Validators.min(18)]],
+      skills: this.formBuilder.array([]),
     });
     
-    this.responsibles.push(responsibleGroup);
+    this.responsibles.push(responsiblesGroup);
   }
 
   removeResponsible(index: number) {
     this.responsibles.removeAt(index);
+  }
+
+  skills(responsibleIndex: number): FormArray {
+    return this.responsibles.at(responsibleIndex).get('skills') as FormArray;
+  }
+
+  addSkill(responsibleIndex: number) {
+    const skills = this.skills(responsibleIndex);
+  
+    const skillsGroup = this.formBuilder.group({
+      skill: ['', [Validators.required, Validators.minLength(2)]]
+    });
+  
+    skills.push(skillsGroup);
+  }
+
+  removeSkill(responsibleIndex: number, skillIndex: number) {
+    const skills = this.skills(responsibleIndex);
+
+    skills.removeAt(skillIndex);
   }
 
   onSubmit() {
@@ -116,5 +137,11 @@ export default class NewTaskComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/']);
+  }
+
+  skillsValidation(): boolean {
+    return this.form.value.responsibles.every((responsible: any) => {
+      return responsible.skills && responsible.skills.length > 0;
+    });
   }
 }

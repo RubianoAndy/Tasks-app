@@ -20,6 +20,7 @@ import { AlertService } from '../../../global/services/alert/alert.service';
 export default class NewTaskComponent implements OnInit {
   idTask!: number;
   form!: FormGroup;
+  task: any;
 
   statusOptions = [
     { label: 'Pendiente', value: 'Pendiente' },
@@ -36,10 +37,50 @@ export default class NewTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.idTask = +params['idTask'];
-    })
+        this.idTask = +params['idTask'];
+    });
 
-    this.createForm();
+    if (this.idTask > 0) {
+      const edit = localStorage.getItem('Tareas') ? JSON.parse(localStorage.getItem('Tareas')!) : [];
+      const taskToEdit = edit.find((task: any) => task.id === this.idTask);
+
+      if (taskToEdit) {
+        this.task = {
+          task: taskToEdit.task,
+          status: taskToEdit.status,
+          responsibles: taskToEdit.responsibles || [],
+        };
+
+        this.createForm(this.task);
+
+        if (this.task.responsibles) {
+          for (let i = 0; i < this.task.responsibles.length; i++) {
+            var responsible = this.task.responsibles[i];
+
+            const responsiblesGroup = this.formBuilder.group({
+              name: [responsible.name, [Validators.required, Validators.minLength(2)]],
+              age: [responsible.age, [Validators.required, Validators.min(18)]],
+              skills: this.formBuilder.array([]),
+            });
+
+            if (responsible.skills) {
+              for (let j = 0; j < responsible.skills.length; j++) {
+                var skill = responsible.skills[j];
+                const skillsGroup = this.formBuilder.group({
+                  skill: [skill.skill, [Validators.required, Validators.minLength(2)]]
+                });
+
+                ( responsiblesGroup.get('skills') as FormArray ).push(skillsGroup);
+              }
+            }
+
+            this.responsibles.push(responsiblesGroup);
+          }
+        }
+      } else
+        this.createForm();
+    } else 
+      this.createForm();
   }
 
   createForm(data: any = null) {

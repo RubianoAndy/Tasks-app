@@ -37,7 +37,7 @@ export default class NewTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-        this.idTask = +params['idTask'];
+      this.idTask = +params['idTask'];
     });
 
     if (this.idTask > 0) {
@@ -84,15 +84,9 @@ export default class NewTaskComponent implements OnInit {
   }
 
   createForm(data: any = null) {
-    data = data || {
-      task: '',
-      status: '',
-      responsibles: [],
-    }
-
     this.form = this.formBuilder.group({
-      task: [data.task, [ Validators.required, Validators.minLength(5), Validators.maxLength(150) ]],
-      status: [data.status, [ Validators.required, Validators.minLength(1) ]],
+      task: [data?.task || '', [Validators.required, Validators.minLength(5), Validators.maxLength(150)]],
+      status: [data?.status || '', [Validators.required, Validators.minLength(1)]],
       responsibles: this.formBuilder.array([]),
     });
   }
@@ -136,16 +130,37 @@ export default class NewTaskComponent implements OnInit {
   }
 
   onSubmit() {
-    var id = 0;
     let totalTasks: any[] = localStorage.getItem('Tareas') ? JSON.parse(localStorage.getItem('Tareas')!) : [];
-
     var alertBody = null;
 
-    if (totalTasks.length >= 0) {
-      let id = totalTasks.length + 1;
+    if (this.idTask > 0) {
+      const taskIndex = totalTasks.findIndex(task => task.id == this.idTask);
+        
+      if (taskIndex !== -1) {
+        totalTasks[taskIndex] = {
+          id: this.idTask,
+          task: this.form.value.task,
+          status: this.form.value.status,
+          responsibles: this.form.value.responsibles || [],
+        };
+
+        alertBody = {
+          type: 'okay',
+          title: '¡Felicitaciones!',
+          message: 'Registro actualizado exitosamente',
+        };
+      } else {
+        alertBody = {
+          type: 'error',
+          title: 'Error',
+          message: 'No se encontró la tarea a editar.',
+        };
+      }
+    } else {
+      const newId = totalTasks.length + 1;
 
       const newTask = {
-        id: id,
+        id: newId,
         task: this.form.value.task,
         status: this.form.value.status,
         responsibles: this.form.value.responsibles || [],
@@ -153,27 +168,17 @@ export default class NewTaskComponent implements OnInit {
 
       totalTasks.push(newTask);
 
-      localStorage.setItem('Tareas', JSON.stringify(totalTasks));
-      
       alertBody = {
         type: 'okay',
         title: '¡Felicitaciones!',
         message: 'Registro guardado exitosamente',
-      }
-
-      this.alertService.showAlert(alertBody);
-
-      this.router.navigate(['/']);
-    } else {
-
-      alertBody = {
-        type: 'error',
-        title: 'Error',
-        message: 'No se pudo guardar el registro',
-      }
-
-      this.alertService.showAlert(alertBody);
+      };
     }
+
+    localStorage.setItem('Tareas', JSON.stringify(totalTasks));
+    
+    this.alertService.showAlert(alertBody);
+    this.router.navigate(['/']);
   }
 
   cancel() {

@@ -7,13 +7,13 @@
     <div class="flex gap-2">
         <div class="w-1/2">
             <label for="task" class="text-sm text-start text-black">Tarea <span class="text-red-500">*</span><span *ngIf="!form.controls['task'].valid && form.controls['task'].value" class="msg-error">(Este campo es obligatorio)</span></label>
-            <input [ngClass]="{'bg-red-300': !form.controls['task'].valid && form.controls['task'].touched}" id="task" formControlName="task" type="text" placeholder="Tarea" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200"/>
+            <input id="task" formControlName="task" type="text" placeholder="Tarea"  [ngClass]="{'bg-red-300': !form.controls['task'].valid && form.controls['task'].touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200"/>
         </div>
     
         <div class="w-1/2">
             <label for="status" class="text-sm text-start text-black">Estado <span class="text-red-500">*</span><span *ngIf="!form.controls['status'].valid && form.controls['status'].value" class="msg-error">(Este campo es obligatorio)</span></label>
-            <select id="status" class="block w-full text-black text-sm rounded-lg px-5 py-2 placeholder:text-gray-500 border border-gray-200">
-                <!-- <option selected>Seleccione</option> -->
+            <select id="status" formControlName="status" class="block w-full text-black text-sm rounded-lg px-5 py-2 placeholder:text-gray-500 border border-gray-200">
+                <option value="" disabled>Seleccione</option>
                 <option [value]="statusOption.value" *ngFor="let statusOption of statusOptions">{{ statusOption.label }}</option>
             </select>
         </div>

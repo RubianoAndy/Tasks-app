@@ -18,7 +18,7 @@ import { AlertService } from '../../../global/services/alert/alert.service';
   styleUrl: './new-task.component.scss'
 })
 export default class NewTaskComponent implements OnInit {
-  id!: number;
+  idTask!: number;
   form!: FormGroup;
 
   statusOptions = [
@@ -36,7 +36,7 @@ export default class NewTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
+      this.idTask = +params['idTask'];
     })
 
     this.createForm();
@@ -45,26 +45,26 @@ export default class NewTaskComponent implements OnInit {
   createForm(data: any = null) {
     data = data || {
       task: '',
-      status: 'Pendiente',
+      status: '',
     }
 
     this.form = this.formBuilder.group({
       task: [data.task, [ Validators.required, Validators.minLength(2), Validators.maxLength(150) ]],
-      status: [data.status, [ Validators.required, Validators.minLength(2), Validators.maxLength(150) ]],
+      status: [data.status, [ Validators.required, Validators.minLength(2) ]],
     });
   }
 
   onSubmit() {
-    var id = null;
+    var id = 0;
     let totalTasks: any[] = localStorage.getItem('Tareas') ? JSON.parse(localStorage.getItem('Tareas')!) : [];
 
     var alertBody = null;
 
-    if(totalTasks.length > 0) {
-      id = totalTasks.length + 1;
+    if (totalTasks.length >= 0) {
+      let id = totalTasks.length + 1;
 
-      var newTask = {
-        id:  id,
+      const newTask = {
+        id: id,
         task: this.form.value.task,
         status: this.form.value.status,
         responsible: this.form.value.responsible || [],
@@ -72,6 +72,8 @@ export default class NewTaskComponent implements OnInit {
 
       totalTasks.push(newTask);
 
+      localStorage.setItem('Tareas', JSON.stringify(totalTasks));
+      
       alertBody = {
         type: 'okay',
         title: '¡Felicitaciones!',
@@ -79,8 +81,6 @@ export default class NewTaskComponent implements OnInit {
       }
 
       this.alertService.showAlert(alertBody);
-
-      localStorage.setItem('Tareas', JSON.stringify(totalTasks));
 
       this.router.navigate(['/']);
     } else {

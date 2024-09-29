@@ -13,47 +13,54 @@
         </div>
     </div>
 
-    <div class="flex-grow overflow-auto">
-        <table class="text-left w-full">
-            <thead class="bg-black text-white">
-                <tr class="text-center font-semibold">
-                    <th class="p-4 w-1/4">ID</th>
-                    <th class="p-4 w-1/4">Tarea</th>
-                    <th class="p-4 w-1/4">Status</th>
-                    <th class="p-4 w-1/4">Responsable</th>
-                    <th class="p-4 w-1/4">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="bg-grey-light">
-                <tr *ngFor="let task of totalTasks">
-                    <td class="p-4 w-1/5 border border-gray-300 text-center font-semibold">{{ task.id }}</td>
-                    <td class="p-4 w-1/5 border border-gray-300">{{ task.task }}</td>
-                    <td class="p-4 w-1/5 border border-gray-300 text-center">{{ task.status }}</td>
-                    <td class="p-4 w-1/5 border border-gray-300">
-                        <ul *ngIf="task.responsibles; else notResponsibles">
-                            <li *ngFor="let person of task.responsibles" class="flex items-start">
-                                <span class="mr-2">•</span> 
-                                {{ person.name }} - {{ person.age }} años <br>
-                                <!-- Skills: {{ person.skills.join(', ') }} -->
-                            </li>
-                        </ul>
-
-                        <ng-template #notResponsibles>
-                            <div class="text-center text-red-500 font-semibold">
-                                Sin asignar
-                            </div>
-                        </ng-template>
-                    </td>
-                    <td class="p-4 w-1/5 border border-gray-300">
-                        <button type="submit" class="w-12 justify-center text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
-                            <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button type="button" class="w-12 justify-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
+    <div class="flex-grow">
+        <table class="text-left w-full table-fixed">
+          <thead class="bg-black text-white sticky top-0">
+            <tr class="text-center font-semibold">
+              <th class="p-4 w-1/4">ID</th>
+              <th class="p-4 w-1/4">Tarea</th>
+              <th class="p-4 w-1/4">Status</th>
+              <th class="p-4 w-1/4">Responsable</th>
+              <th class="p-4 w-1/4">Acciones</th>
+            </tr>
+          </thead>
         </table>
+        
+        <div class="overflow-y-auto" style="max-height: calc(100vh - 100px);">
+            <table class="text-left w-full table-fixed">
+                <tbody class="bg-white">
+                    <tr *ngFor="let task of totalTasks">
+                        <td class="p-4 w-1/5 border border-gray-300 text-center font-semibold">{{ task.id }}</td>
+                        <td class="p-4 w-1/5 border border-gray-300">{{ task.task }}</td>
+                        <td class="p-4 w-1/5 border border-gray-300 text-center">{{ task.status }}</td>
+                        <td class="p-4 w-1/5 border border-gray-300">
+                            <ul *ngIf="task.responsibles">
+                                <li *ngFor="let person of task.responsibles; let i = index" class="flex flex-col items-start mb-4">
+                                <div class="flex items-start">
+                                    <span class="mr-2">•</span>
+                                    <div>{{ person.name }} - {{ person.age }} años</div>
+                                </div>
+                
+                                <span *ngIf="person.skills && person.skills.length > 0" class="ml-4 mt-0">
+                                    <br> Habilidades:
+                                    <div *ngFor="let skill of person.skills">
+                                    <span class="mr-2">•</span> {{ skill.skill }}
+                                    </div>
+                                </span>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="p-4 w-1/5 border border-gray-300">
+                            <button type="submit" class="w-10 h-10 justify-center text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <button type="button" (click)="deleteTask(task.id)" class="w-10 h-10 justify-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

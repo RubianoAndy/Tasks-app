@@ -1,6 +1,6 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../../global/services/alert/alert.service';
 
@@ -46,12 +46,31 @@ export default class NewTaskComponent implements OnInit {
     data = data || {
       task: '',
       status: '',
+      responsibles: [],
     }
 
     this.form = this.formBuilder.group({
       task: [data.task, [ Validators.required, Validators.minLength(2), Validators.maxLength(150) ]],
       status: [data.status, [ Validators.required, Validators.minLength(2) ]],
+      responsibles: this.formBuilder.array([]),
     });
+  }
+
+  get responsibles(): FormArray {
+    return this.form.get('responsibles') as FormArray;
+  }
+
+  addResponsible() {
+    const responsibleGroup = this.formBuilder.group({
+      name: ['', Validators.required],
+      age: ['', [Validators.required, Validators.min(1)]]
+    });
+    
+    this.responsibles.push(responsibleGroup);
+  }
+
+  removeResponsible(index: number) {
+    this.responsibles.removeAt(index);
   }
 
   onSubmit() {
@@ -67,7 +86,7 @@ export default class NewTaskComponent implements OnInit {
         id: id,
         task: this.form.value.task,
         status: this.form.value.status,
-        responsible: this.form.value.responsible || [],
+        responsibles: this.form.value.responsibles || [],
       };
 
       totalTasks.push(newTask);

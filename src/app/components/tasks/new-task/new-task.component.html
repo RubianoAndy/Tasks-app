@@ -1,21 +1,49 @@
-<form class="space-y-2 p-10" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form class="space-y-10 m-10" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="text-center">
-        <h2 class="mb-1 text-5xl font-semibold text-foreground">Tarea nueva</h2>
+        <h1 class="mb-10 text-5xl font-semibold text-foreground">Tarea nueva</h1>
         <p class="text-sm text-muted-foreground">Bienvenido a este módulo, acá puedes crear tu nueva tarea y asignarla a cada persona</p>
     </div>
 
     <div class="flex gap-2">
         <div class="w-1/2">
             <label for="task" class="text-sm text-start text-black">Tarea <span class="text-red-500">*</span><span *ngIf="!form.controls['task'].valid && form.controls['task'].value" class="msg-error">(Este campo es obligatorio)</span></label>
-            <input id="task" formControlName="task" type="text" placeholder="Tarea"  [ngClass]="{'bg-red-300': !form.controls['task'].valid && form.controls['task'].touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200"/>
+            <input id="task" formControlName="task" type="text" placeholder="Tarea" [ngClass]="{'bg-red-300': !form.controls['task'].valid && form.controls['task'].touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200 shadow-lg"/>
         </div>
     
         <div class="w-1/2">
             <label for="status" class="text-sm text-start text-black">Estado <span class="text-red-500">*</span><span *ngIf="!form.controls['status'].valid && form.controls['status'].value" class="msg-error">(Este campo es obligatorio)</span></label>
-            <select id="status" formControlName="status" class="block w-full text-black text-sm rounded-lg px-5 py-2 placeholder:text-gray-500 border border-gray-200">
+            <select id="status" formControlName="status" [ngClass]="{'bg-red-300': !form.controls['status'].valid && form.controls['status'].touched}" class="block w-full text-black text-sm rounded-lg px-5 py-2 placeholder:text-gray-500 border border-gray-200 shadow-lg">
                 <option value="" disabled>Seleccione</option>
                 <option [value]="statusOption.value" *ngFor="let statusOption of statusOptions">{{ statusOption.label }}</option>
             </select>
+        </div>
+    </div>
+
+    <div class="flex border border-gray-100 rounded-lg shadow-lg my-4">
+        <div formArrayName="responsibles" class="w-full py-10">
+            <div *ngFor="let responsible of responsibles.controls; let i = index" [formGroupName]="i" class="flex gap-2">
+                <div class="w-1/2">
+                    <label for="name{{i}}" class="text-sm text-start text-black">Nombre <span class="text-red-500">*</span><span *ngIf="!responsible.get('name')?.valid && responsible.get('name')?.touched" class="msg-error">(Este campo es obligatorio)</span></label>
+                    <input id="name{{i}}" formControlName="name" type="text" placeholder="Nombre" [ngClass]="{'bg-red-300': !responsible.get('name')?.valid && responsible.get('name')?.touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200 shadow-lg"/>
+                </div>
+                
+                <div class="w-1/2">
+                    <label for="age{{i}}" class="text-sm text-start text-black">Edad <span class="text-red-500">*</span><span *ngIf="!responsible.get('age')?.valid && responsible.get('age')?.touched" class="msg-error">(Este campo es obligatorio)</span></label>
+                    <input id="age{{i}}" formControlName="age" type="number" placeholder="Edad" [ngClass]="{'bg-red-300': !responsible.get('age')?.valid && responsible.get('age')?.touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200"/>
+                </div>
+
+                <div class="flex items-end">
+                    <button type="button" (click)="removeResponsible(i)" class="w-10 h-10 items-center justify-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-2">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-center my-4">
+                <button type="button" (click)="addResponsible()" class="bg-blue-500 text-white rounded items-center w-1/4 h-8 hover:bg-blue-700">
+                    <i class="fa-solid fa-plus mr-2"></i> Agregar Responsable
+                </button>
+            </div>
         </div>
     </div>
 

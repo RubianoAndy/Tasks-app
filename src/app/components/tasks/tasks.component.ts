@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
   imports: [
     RouterLink,
     NgFor,
+    NgIf,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'

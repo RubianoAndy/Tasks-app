@@ -23,6 +23,10 @@
         </div>
     </div>
 
+    <div class="flex justify-center">
+        <h1 class="mb-10 text-3xl font-bold text-foreground">Total tareas: {{totalTasks.length}}</h1>
+    </div>
+
     <div class="hidden md:block flex-grow">
         <table class="text-left w-full table-fixed">
           <thead class="bg-black text-white sticky top-0">
@@ -76,49 +80,53 @@
 
     <div class="block md:hidden flex-grow">
         <table class="text-left w-full table-fixed">
-          <thead class="bg-black text-white sticky top-0">
-            <tr class="text-center font-semibold">
-              <th class="p-4 w-1/4">Tarea</th>
-              <th class="p-4 w-1/4">Responsable</th>
-              <th class="p-4 w-1/4">Acciones</th>
-            </tr>
-          </thead>
-            <tbody class="bg-white">
-                <tr *ngFor="let task of totalTasks">
-                    <td class="p-4 w-1/5 border border-gray-300">
-                        <span class="text-red-500 font-bold">ID: {{ task.id }} </span><br>
-                        {{ task.task }} <br>
-                        {{ task.status }}
-                    </td>
-
-                    <td class="p-4 w-1/5 border border-gray-300">
-                        <ul *ngIf="task.responsibles">
-                            <li *ngFor="let person of task.responsibles; let i = index" class="flex flex-col items-start mb-4">
-                            <div class="flex items-start">
-                                <span class="mr-2">•</span>
-                                <div>{{ person.name }} - {{ person.age }} años</div>
-                            </div>
-            
-                            <span *ngIf="person.skills && person.skills.length > 0" class="ml-4 mt-0">
-                                <br> Habilidades:
-                                <div *ngFor="let skill of person.skills">
-                                <span class="mr-2">•</span> {{ skill.skill }}
-                                </div>
-                            </span>
-                            </li>
-                        </ul>
-                    </td>
-
-                    <td class="p-4 w-1/5 border border-gray-300">
-                        <button type="button" [routerLink]="['/nueva-tarea', task.id]" class="w-10 h-10 justify-center text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
-                            <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button type="button" (click)="deleteTask(task.id)" class="w-10 h-10 justify-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
+            <thead class="bg-black text-white sticky top-0">
+                <tr class="text-center font-semibold">
+                <th class="p-4 w-1/4">Tarea</th>
+                <th class="p-4 w-1/4">Responsable</th>
+                <th class="p-4 w-1/4">Acciones</th>
                 </tr>
-            </tbody>
+            </thead>
         </table>
+        <div class="overflow-y-auto" style="max-height: calc(100vh - 100px);">
+            <table class="text-left w-full table-fixed">
+                <tbody class="bg-white">
+                    <tr *ngFor="let task of totalTasks">
+                        <td class="p-4 w-1/5 border border-gray-300">
+                            <span class="text-red-500 font-bold">ID: {{ task.id }} </span><br>
+                            {{ task.task }} <br>
+                            {{ task.status }}
+                        </td>
+
+                        <td class="p-4 w-1/5 border border-gray-300">
+                            <ul *ngIf="task.responsibles">
+                                <li *ngFor="let person of task.responsibles; let i = index" class="flex flex-col items-start mb-4">
+                                <div class="flex items-start">
+                                    <span class="mr-2">•</span>
+                                    <div>{{ person.name }} - {{ person.age }} años</div>
+                                </div>
+                
+                                <span *ngIf="person.skills && person.skills.length > 0" class="ml-4 mt-0">
+                                    <br> Habilidades:
+                                    <div *ngFor="let skill of person.skills">
+                                    <span class="mr-2">•</span> {{ skill.skill }}
+                                    </div>
+                                </span>
+                                </li>
+                            </ul>
+                        </td>
+
+                        <td class="p-4 w-1/5 border border-gray-300">
+                            <button type="button" [routerLink]="['/nueva-tarea', task.id]" class="w-10 h-10 justify-center text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <button type="button" (click)="deleteTask(task.id)" class="w-10 h-10 justify-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

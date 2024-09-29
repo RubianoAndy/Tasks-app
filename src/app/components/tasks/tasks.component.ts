@@ -2,6 +2,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AlertService } from '../../global/services/alert/alert.service';
+import { TaskService } from '../../services/task/task.service';
 
 @Component({
   selector: 'app-tasks',
@@ -25,13 +26,14 @@ export default class TasksComponent implements OnInit {
   ]
 
   constructor(
+    private taskService: TaskService,
     private alertService: AlertService,
   ) { }
 
   ngOnInit(): void {
-    this.totalTasks = localStorage.getItem('Tareas') ? JSON.parse(localStorage.getItem('Tareas')!) : [];
+    this.totalTasks = this.taskService.getTasks('');
     if (this.selectedStatus != '' && this.selectedStatus != null && this.selectedStatus != undefined)
-      this.totalTasks = this.totalTasks.filter((task: any) => task.status === this.selectedStatus);
+      this.totalTasks = this.taskService.getTasks(this.selectedStatus);
 
     this.totalTasks.sort((a: any, b: any) => a.id - b.id);    // Ordenar de menor a mayor
   }

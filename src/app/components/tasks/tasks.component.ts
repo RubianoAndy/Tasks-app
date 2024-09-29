@@ -67,13 +67,13 @@ export default class TasksComponent implements OnInit {
   }
 
   getApiInfo() {
-    this.apiService.getApi().subscribe(
-      () => {
+    this.apiService.getApi().subscribe({
+      next: (response) => {
         console.log(`Si se obtuvo la información del api`)
       },
-      (error) => {
+      error: (error) => {
         console.error('No se obtuvo la información del api:', error);
       }
-    );
+    });
   }
 }

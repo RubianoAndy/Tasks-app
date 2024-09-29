@@ -35,7 +35,7 @@ export default class TasksComponent implements OnInit {
     alertBody = {
       type: 'okay',
       title: '¡Felicitaciones!',
-      message: 'La tarea se ha borrado exitosamente',
+      message: `La tarea ${id} se ha borrado exitosamente`,
     };
 
     this.alertService.showAlert(alertBody);

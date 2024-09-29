@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AlertService } from '../../global/services/alert/alert.service';
 import { TaskService } from '../../services/task/task.service';
+import { ApiService } from '../../services/api/api.service';
 
 @Component({
   selector: 'app-tasks',
@@ -28,6 +29,8 @@ export default class TasksComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private alertService: AlertService,
+
+    private apiService: ApiService,
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +39,8 @@ export default class TasksComponent implements OnInit {
       this.totalTasks = this.taskService.getTasks(this.selectedStatus);
 
     this.totalTasks.sort((a: any, b: any) => a.id - b.id);    // Ordenar de menor a mayor
+
+    this.getApiInfo();
   }
 
   deleteTask(id: number) {
@@ -59,5 +64,16 @@ export default class TasksComponent implements OnInit {
   change(event: Event) {
     this.selectedStatus = (event.target as HTMLSelectElement).value;
     this.ngOnInit();
+  }
+
+  getApiInfo() {
+    this.apiService.getApi().subscribe(
+      () => {
+        console.log(`Si se obtuvo la información del api`)
+      },
+      (error) => {
+        console.error('No se obtuvo la información del api:', error);
+      }
+    );
   }
 }

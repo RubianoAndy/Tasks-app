@@ -83,15 +83,16 @@ export default class NewTaskComponent implements OnInit {
       localStorage.setItem('Tareas', JSON.stringify(totalTasks));
 
       this.router.navigate(['/']);
-    }
+    } else {
 
-    alertBody = {
-      type: 'error',
-      title: 'Error',
-      message: 'No se pudo guardar el registro',
-    }
+      alertBody = {
+        type: 'error',
+        title: 'Error',
+        message: 'No se pudo guardar el registro',
+      }
 
-    this.alertService.showAlert(alertBody);
+      this.alertService.showAlert(alertBody);
+    }
   }
 
   cancel() {

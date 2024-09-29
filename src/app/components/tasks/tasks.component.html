@@ -5,10 +5,20 @@
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-black">Andy Rubiano - gestión de tareas</span>
             </div>
 
-            <div class="flex ml-auto space-x-3 md:space-x-2">  
-                <button type="button" [routerLink]="['/nueva-tarea',0]" class="flex items-center text-white font-medium rounded-lg text-sm px-4 py-2 text-center bg-blue-600 hover:bg-blue-700">
-                    <i class="fa-solid fa-plus mr-2"></i> Nueva tarea
-                </button>
+
+            <div class="flex ml-auto space-x-3 md:space-x-2">
+                <div class="w-full">
+                    <select id="status" (change)="change($event)" class="block w-full text-black text-sm rounded-lg px-5 py-2 placeholder:text-gray-500 border border-gray-200 shadow-lg">
+                        <option value="">Estado</option>
+                        <option [value]="statusOption.value" *ngFor="let statusOption of statusOptions">{{ statusOption.label }}</option>
+                    </select>
+                </div>
+
+                <div class="w-full">
+                    <button type="button" [routerLink]="['/nueva-tarea',0]" class="flex items-center text-white font-medium rounded-lg text-sm px-4 py-2 text-center bg-blue-600 hover:bg-blue-700">
+                        <i class="fa-solid fa-plus mr-2"></i> Nueva tarea
+                    </button>
+                </div>
             </div>
         </div>
     </div>

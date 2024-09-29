@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../../global/services/alert/alert.service';
+import { TaskService } from '../../../services/task/task.service';
 
 @Component({
   selector: 'app-new-task',
@@ -31,6 +32,7 @@ export default class NewTaskComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private taskService: TaskService,
 
     private alertService: AlertService
   ) { }
@@ -157,10 +159,10 @@ export default class NewTaskComponent implements OnInit {
         };
       }
     } else {
-      const newId = totalTasks.length + 1;
+      const maxId = totalTasks.reduce((max, task) => Math.max(max, task.id), 0);
 
       const newTask = {
-        id: newId,
+        id: maxId + 1,
         task: this.form.value.task,
         status: this.form.value.status,
         responsibles: this.form.value.responsibles || [],
@@ -175,7 +177,7 @@ export default class NewTaskComponent implements OnInit {
       };
     }
 
-    localStorage.setItem('Tareas', JSON.stringify(totalTasks));
+    this.taskService.setTask(totalTasks);
     
     this.alertService.showAlert(alertBody);
     this.router.navigate(['/']);

@@ -14,4 +14,8 @@ export class TaskService {
 
     return totalTasks;
   }
+
+  setTask(body: any) {
+    localStorage.setItem('Tareas', JSON.stringify(body));
+  }
 }

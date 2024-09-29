@@ -13,18 +13,39 @@
         <table class="text-left w-full">
             <thead class="bg-black text-white">
                 <tr>
-                    <th class="p-4 w-1/4">One</th>
-                    <th class="p-4 w-1/4">Two</th>
-                    <th class="p-4 w-1/4">Three</th>
-                    <th class="p-4 w-1/4">Four</th>
+                    <th class="p-4 w-1/4">ID</th>
+                    <th class="p-4 w-1/4">Tarea</th>
+                    <th class="p-4 w-1/4">Status</th>
+                    <th class="p-4 w-1/4">Responsable</th>
+                    <th class="p-4 w-1/4">Acciones</th>
                 </tr>
             </thead>
             <tbody class="bg-grey-light">
-                <tr>
-                    <td class="p-4 w-1/4">Dogs</td>
-                    <td class="p-4 w-1/4">Cats</td>
-                    <td class="p-4 w-1/4">Birds</td>
-                    <td class="p-4 w-1/4">Fish</td>
+                <tr *ngFor="let task of totalTasks">
+                    <td class="p-4 w-1/5 border border-gray-300">{{ task.id }}</td>
+                    <td class="p-4 w-1/5 border border-gray-300">{{ task.task }}</td>
+                    <td class="p-4 w-1/5 border border-gray-300">{{ task.status }}</td>
+                    <td class="p-4 w-1/5 border border-gray-300">
+                        @if (task.responsible) {
+                            <ul>
+                                <li *ngFor="let person of task.responsible" class="flex items-start">
+                                    <span class="mr-2">•</span> 
+                                    {{ person.name }} - {{ person.age }} años <br>
+                                    Skills: {{ person.skills.join(', ') }}
+                                </li>
+                            </ul>
+                        } @else {
+                            No existen responsables asociados
+                        }
+                    </td>
+                    <td class="p-4 w-1/5 border border-gray-300">
+                        <button type="submit" class="w-12 justify-center text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button type="button" class="w-12 justify-center text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>

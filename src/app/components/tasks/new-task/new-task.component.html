@@ -1,6 +1,6 @@
 <form class="space-y-10 m-10" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="text-center">
-        <h1 class="mb-10 text-5xl font-semibold text-foreground">Tarea nueva</h1>
+        <h1 class="mb-10 text-5xl font-bold text-foreground">Tarea nueva</h1>
         <p class="text-sm text-muted-foreground">Bienvenido a este módulo, acá puedes crear tu nueva tarea y asignarla a cada persona</p>
     </div>
 
@@ -19,10 +19,14 @@
         </div>
     </div>
 
-    <div class="flex border border-gray-100 rounded-lg shadow-lg my-4">
+    <div class="flex flex-col border border-gray-100 rounded-lg shadow-lg my-4">
+        <div class="text-center">
+            <h2 class="mb-10 text-3xl font-bold text-foreground">Responsables</h2>
+        </div>
+        
         <div formArrayName="responsibles" class="w-full py-10">
             <div *ngFor="let responsible of responsibles.controls; let i = index" [formGroupName]="i" class="flex flex-col gap-4">
-                <div class="flex w-full flex-col md:flex-row space-y-4 md:space-x-4 px-4">
+                <div class="flex w-full flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 px-4">
                     <div class="w-full md:w-1/2">
                         <label for="name{{i}}" class="text-sm text-start text-black">Nombre <span class="text-red-500">*</span><span *ngIf="!responsible.get('name')?.valid && responsible.get('name')?.touched" class="msg-error">(Este campo es obligatorio)</span></label>
                         <input id="name{{i}}" formControlName="name" type="text" placeholder="Nombre" [ngClass]="{'bg-red-300': !responsible.get('name')?.valid && responsible.get('name')?.touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200 shadow-lg"/>
@@ -30,7 +34,7 @@
                     
                     <div class="w-full md:w-1/2">
                         <label for="age{{i}}" class="text-sm text-start text-black">Edad <span class="text-red-500">*</span><span *ngIf="!responsible.get('age')?.valid && responsible.get('age')?.touched" class="msg-error">(Mínimo 18 años de edad)</span></label>
-                        <input id="age{{i}}" formControlName="age" type="number" placeholder="Edad" [ngClass]="{'bg-red-300': !responsible.get('age')?.valid && responsible.get('age')?.touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200"/>
+                        <input id="age{{i}}" formControlName="age" type="number" placeholder="Edad" [ngClass]="{'bg-red-300': !responsible.get('age')?.valid && responsible.get('age')?.touched}" class="flex items-center w-full px-5 py-2 text-sm text-black placeholder:text-gray-500 rounded-lg border border-gray-200 shadow-lg"/>
                     </div>
     
                     <div class="flex items-end">
